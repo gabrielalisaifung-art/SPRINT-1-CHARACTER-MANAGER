@@ -1,3 +1,4 @@
+
 package com.unpri.charactermanager.view;
 
 import java.awt.Color;
@@ -6,61 +7,92 @@ import javax.swing.BorderFactory;
 import javax.swing.border.Border;
 import com.unpri.charactermanager.model.CharacterType;
 
-/**
- * Pusat gaya tampilan Character Manager.
- * Mengubah tema aplikasi cukup dengan mengedit file ini.
- */
-public final class AppTheme {
+public class AppTheme {
 
-    // ---------- Palet warna ----------
-    public static final Color BG_MAIN    = Color.decode("#13131f"); // latar jendela
-    public static final Color BG_STATUS  = Color.decode("#0d0d1a"); // latar bar status, lebih gelap
-    public static final Color BG_PANEL   = Color.decode("#1e1e30"); // latar sel statistik
-    public static final Color TEXT_MAIN  = Color.decode("#dfe6e9"); // teks utama
-    public static final Color TEXT_MUTED = Color.decode("#9d9dbf"); // teks sekunder / metadata
-    public static final Color TEXT_LIGHT = Color.WHITE;             // teks di atas kartu berwarna
-    public static final Color GOLD       = Color.decode("#fdcb6e"); // aksen karakter level tinggi
+    // =========================
+    // PALET WARNA
+    // =========================
 
-    // ---------- Font ----------
-    public static final Font FONT_TITLE     = new Font("SansSerif", Font.BOLD, 22);
-    public static final Font FONT_BODY      = new Font("SansSerif", Font.PLAIN, 14);
-    public static final Font FONT_BODY_BOLD = FONT_BODY.deriveFont(Font.BOLD);  // gaya tebal, ukuran tetap
-    public static final Font FONT_MONO      = new Font("Monospaced", Font.PLAIN, 13);
+    public static final Color BG_MAIN =
+            Color.decode("#1e272e");
 
-    // ---------- Border (immutable, aman dipakai ulang) ----------
-    public static final Border CARD_BORDER   = BorderFactory.createEmptyBorder(8, 12, 8, 12);
-    public static final Border PANEL_BORDER  = BorderFactory.createEmptyBorder(16, 16, 16, 16);
-    public static final Border HEADER_BORDER = BorderFactory.createEmptyBorder(16, 16, 8, 16);
-    public static final Border STATS_BORDER  = BorderFactory.createEmptyBorder(0, 16, 8, 16);
-    public static final Border LIST_BORDER   = BorderFactory.createEmptyBorder(8, 16, 8, 8);
-    public static final Border LEGEND_BORDER = BorderFactory.createEmptyBorder(8, 8, 8, 16);
-    public static final Border STATUS_BORDER = BorderFactory.createEmptyBorder(6, 16, 6, 16);
+    public static final Color BG_STATUS =
+            Color.decode("#182127");
 
-    // ---------- Aturan tampilan (urusan View, bukan aturan game) ----------
-    public static final int HIGH_LEVEL_THRESHOLD = 5;  // level >= ini: teks emas dan tebal
-    public static final int DISABLED_LEVEL = 1;        // level <= ini: kartu dinonaktifkan
+    public static final Color TEXT_MAIN =
+            Color.decode("#ffffff");
 
-    private AppTheme() { }  // class utilitas: cegah new AppTheme()
+    public static final Color TEXT_LIGHT =
+            Color.decode("#dfe6e9");
 
-    /** Menerjemahkan role (data Model) menjadi warna kartu (urusan View). */
+    public static final Color TEXT_MUTED =
+            Color.decode("#b2bec3");
+
+    public static final Color GOLD =
+            Color.decode("#f1c40f");
+
+    public static final Color ERROR =
+            Color.decode("#ff7675");
+
+    public static final Color SUCCESS =
+            Color.decode("#55efc4");
+
+    // =========================
+    // FONT
+    // =========================
+
+    public static final Font FONT_TITLE =
+            new Font("Arial", Font.BOLD, 24);
+
+    public static final Font FONT_BODY =
+            new Font("Arial", Font.PLAIN, 14);
+
+    public static final Font FONT_MONO =
+            new Font("Monospaced", Font.PLAIN, 12);
+
+    // =========================
+    // BORDER
+    // =========================
+
+    public static final Border CARD_BORDER =
+            BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(
+                    Color.decode("#485460"), 1),
+                BorderFactory.createEmptyBorder(
+                    10, 12, 10, 12)
+            );
+
+    // =========================
+    // WARNA BERDASARKAN ROLE
+    // =========================
+
+    private static final Color[] ROLE_COLORS = {
+        Color.decode("#0984e3"),
+        Color.decode("#6c5ce7"),
+        Color.decode("#00b894"),
+        Color.decode("#e17055"),
+        Color.decode("#d63031")
+    };
+
     public static Color colorFor(CharacterType type) {
-        switch (type) {
-            case WARRIOR: return Color.decode("#d63031"); // merah
-            case MAGE:    return Color.decode("#092de3"); // biru tua
-            case ARCHER:  return Color.decode("#00b894"); // hijau
-            case HEALER:  return Color.decode("#73e75c"); // hijau muda
-            default:      return Color.GRAY;              // cadangan bila ada role baru
+        if (type == null) {
+            return BG_STATUS;
         }
+
+        return ROLE_COLORS[
+            type.ordinal() % ROLE_COLORS.length
+        ];
     }
 
-    /** Teks tooltip per role. */
+    // =========================
+    // DESKRIPSI ROLE
+    // =========================
+
     public static String describe(CharacterType type) {
-        switch (type) {
-            case WARRIOR: return "Warrior: jarak dekat, HP tinggi";
-            case MAGE:    return "Mage: serangan sihir, HP rendah";
-            case ARCHER:  return "Archer: jarak jauh, seimbang";
-            case HEALER:  return "Healer: pemulih, mendukung tim";
-            default:      return "Role belum terdaftar";
+        if (type == null) {
+            return "Role tidak diketahui";
         }
+
+        return "Role: " + type.name();
     }
 }

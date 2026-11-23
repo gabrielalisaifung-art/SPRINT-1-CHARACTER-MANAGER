@@ -1,69 +1,42 @@
-TP12 — Character Manager Sprint #5
-Pada sprint ini MainWindow naik dari v0.4 ke v0.5 dengan tata letak BorderLayout yang tetap rapi saat jendela diubah ukurannya. Empat wilayah terisi: header dan panel statistik (NORTH), daftar karakter berscroll (CENTER), legenda role (EAST), dan bar status (SOUTH). Package model tidak berubah sama sekali.
+TP14 — Implementasi Validasi Form Karakter
+A. Dokumentasi Screenshot
+Berikut adalah dokumentasi hasil pengujian validasi pada Character Manager.
 
-ukuran awal:
-c:\Users\TUF GAMING\OneDrive\Pictures\Screenshots\Screenshot 2026-11-07 214138.png
+1. Pengujian Nama Kosong
 
-Jendela dilebarkan:
+Ketika pengguna menekan tombol Simpan tanpa mengisi nama karakter, sistem menampilkan pesan kesalahan "Nama wajib diisi".
 
-c:\Users\TUF GAMING\OneDrive\Pictures\Screenshots\Screenshot 2026-11-07 220323.png
+alt text
 
-Jendela dikecilkan sampai scrollbar tampak:
+2. Pengujian Nama Duplikat
 
-c:\Users\TUF GAMING\OneDrive\Pictures\Screenshots\Screenshot 2026-11-07 220621.png
+Ketika pengguna memasukkan nama karakter yang sudah terdaftar, sistem menolak penyimpanan dan menampilkan pesan "Nama sudah dipakai".
 
-Tabel pengamatan resize (prediksi vs hasil)
-Aksi	Prediksi (berdasarkan aturan BorderLayout)	Hasil pengamatan
-Jendela dilebarkan	Hanya wilayah CENTER yang ikut melebar. Legenda (EAST) tetap selebar isinya, sedangkan header dan bar status memanjang mengikuti lebar jendela.	Jendela dapat ditarik melebar ke kanan dan ke kiri, serta dapat di-maximize. Daftar kartu di tengah ikut melebar mengisi ruang tambahan, sementara legenda tetap berukuran sama dan header serta bar status memanjang. Hasilnya sesuai prediksi.
-Jendela ditinggikan	Wilayah CENTER bertambah tinggi. Kartu tidak melar karena grid kartu berada di NORTH panel holder, dan legenda tetap menempel di atas.	Jendela dapat ditarik ke atas dan ke bawah. Area daftar bertambah tinggi, kartu tetap pada tinggi alaminya dengan ruang kosong di bawahnya, dan legenda tetap di bagian atas. Hasilnya sesuai prediksi.
-Tinggi dikecilkan	Scrollbar muncul atau bertambah panjang di area daftar, sedangkan header dan bar status tetap terlihat.	Ketika tinggi dikecilkan, daftar karakter dapat digeser naik-turun dengan scrollbar sehingga seluruh karakter tetap bisa dilihat, dan header serta bar status tetap tampil. Hasilnya sesuai prediksi.
-Disempitkan sampai batas	Jendela berhenti mengecil pada ukuran 560 x 380 karena setMinimumSize.	Jendela berhenti mengecil pada ukuran minimum dan tidak bisa diperkecil lagi, sehingga tampilan tidak terpotong. Hasilnya sesuai prediksi.
-Kesimpulannya, tata letak BorderLayout bekerja sesuai rancangan: hanya CENTER yang menyerap perubahan ukuran, area lain mempertahankan ukurannya, dan JScrollPane menjaga seluruh karakter tetap dapat diakses ketika ruang tidak cukup.|
+alt text
 
-Struktur panel bersarang
-MainWindow memakai BorderLayout dengan empat wilayah, dan setiap wilayah berisi panel yang tersusun bersarang. NORTH berisi panel pembungkus top yang memuat header (judul di kiri, jumlah karakter di kanan) dan panel statistik GridLayout 2x2. CENTER berisi JScrollPane yang membungkus panel holder, dan di NORTH holder ada panel cards ber- GridLayout yang menampung kartu karakter. EAST berisi legenda BoxLayout vertikal yang diturunkan dari CharacterType.values(), dan SOUTH berisi bar status dengan teks di kiri dan versi di kanan.
+3. Pengujian Berhasil Menambahkan Karakter
 
-MainWindow (JFrame, BorderLayout)
-├── NORTH  : top (JPanel, BorderLayout)
-│   ├── NORTH  : header (BorderLayout)  judul WEST, jumlah EAST
-│   └── CENTER : stats (GridLayout 2x2) empat sel statistik
-├── CENTER : JScrollPane
-│   └── holder (BorderLayout)
-│       └── NORTH : cards (GridLayout 0x1) -> kartu JLabel
-├── EAST   : legend (BoxLayout Y_AXIS) -> strut, chip per role, glue
-└── SOUTH  : status (BorderLayout)  teks WEST, versi EAST
-Panel tambahan: statistik GridLayout 2x2
-Panel statistik (total karakter, rata-rata level, level tertinggi, jumlah karakter level tinggi) saya taruh di bawah header. Saya memilih GridLayout 2x2 karena keempat statistik setara dan sebaiknya berukuran seragam, serta tetap tersusun dua kolom saat jendela dilebarkan. Layout yang saya tolak:
+Ketika pengguna memasukkan nama, memilih role, dan menentukan level yang valid, sistem berhasil menyimpan karakter dan menampilkan kartu karakter baru pada daftar.
 
-FlowLayout: sel berukuran sesuai isi (tidak seragam), dan bisa pindah baris sendiri ketika jendela menyempit sehingga susunan 2x2 tidak stabil.
-BoxLayout: hanya menyusun pada satu sumbu, sehingga 2x2 membutuhkan panel bersarang tambahan.
-GridBagLayout: terlalu rumit untuk empat sel yang ukurannya sama.
-Bar status awalnya memakai FlowLayout, lalu saya ganti ke BorderLayout agar teks status menempel kiri dan versi menempel kanan, karena FlowLayout tidak bisa menempelkan elemen ke sisi kanan.
+alt text
 
-Catatan: statistik dihitung di MainWindow dari list yang diterima. Idealnya perhitungan seperti itu berada di Model atau Controller, dan ini saya catat sebagai perbaikan untuk sprint berikutnya.
+B. Tabel Pengujian Validasi
+No.	Skenario Pengujian	Hasil yang Diharapkan	Hasil Aktual	Keterangan
+1	Nama dikosongkan	Muncul pesan "Nama wajib diisi"	Isi setelah pengujian	Berhasil / Perlu perbaikan
+2	Nama kurang dari 3 karakter	Muncul pesan validasi panjang nama	Isi setelah pengujian	Berhasil / Perlu perbaikan
+3	Nama lebih dari 20 karakter	Muncul pesan validasi panjang nama	Isi setelah pengujian	Berhasil / Perlu perbaikan
+4	Nama menggunakan angka atau simbol	Muncul pesan "Nama hanya huruf dan spasi"	Isi setelah pengujian	Berhasil / Perlu perbaikan
+5	Nama duplikat	Sistem menolak nama yang sudah digunakan	Isi setelah pengujian	Berhasil / Perlu perbaikan
+6	Nama valid	Karakter berhasil ditambahkan	Isi setelah pengujian	Berhasil / Perlu perbaikan
+7	Level tidak valid	Sistem menolak level yang tidak sesuai	Isi setelah pengujian	Berhasil / Perlu perbaikan
+Catatan Perbedaan Hasil dan Tindakan Perbaikan:
 
-Bukti git diff: package model tidak berubah
-git diff HEAD~1 HEAD --stat -- src/com/unpri/charactermanager/model
-Output perintah di atas kosong, artinya tidak ada perubahan di Character.java, CharacterType.java, maupun CharacterManager.java.
+Apabila hasil pengujian aktual berbeda dari hasil yang diharapkan, dilakukan pemeriksaan pada bagian validasi form dan aturan pada CharacterManager. Perbaikan dilakukan dengan menyesuaikan kondisi validasi, pesan kesalahan, serta proses penyimpanan data. Setelah perbaikan, pengujian dilakukan kembali untuk memastikan sistem berjalan sesuai ketentuan.
 
-Struktur folder
-CharacterManager/
-├── src/
-│   └── com/
-│       └── unpri/
-│           └── charactermanager/
-│               ├── model/
-│               │   ├── Character.java
-│               │   ├── CharacterManager.java
-│               │   └── CharacterType.java
-│               ├── view/
-│               │   ├── AppTheme.java
-│               │   └── MainWindow.java
-│               └── Main.java
-├── README.MD
-Analisis Bagian D TP12 (Google Docs)
-Nama :Tan Lisaifung Gambriela
+C. Kompromi Implementasi Sementara
+Pada implementasi TP14 ini, penggunaan ActionListener masih dilakukan secara sederhana untuk menangani kejadian ketika tombol Simpan ditekan. Selain itu, CharacterFormPanel masih memanggil CharacterManager secara langsung untuk menambahkan karakter dan memeriksa nama duplikat. Pendekatan ini dipilih agar proses validasi dan penyimpanan dapat berjalan dengan lebih mudah dipahami pada tahap pembelajaran. Pada pengembangan selanjutnya, mekanisme event handling dan pemisahan tanggung jawab antarlapisan dapat disempurnakan agar struktur program menjadi lebih terorganisasi.
 
-Nim : 253303621288
+D. Dokumentasi Analisis Konseptual
+Dokumen analisis Bagian D:
 
- https://docs.google.com/document/d/1wbJCEVc8fia5fxkG3l46-ylBtKJ-3TKV/edit?usp=drivesdk&ouid=115604189359564607117&rtpof=true&sd=true
+https://1drv.ms/w/c/f7e4b908e7214f1b/IQCT5bzZ4e8lT56wlvkn9QIdAXjcR8wp_zswJrJfqpSrtIg

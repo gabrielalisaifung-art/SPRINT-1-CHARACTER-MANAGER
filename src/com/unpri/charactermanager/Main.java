@@ -1,27 +1,42 @@
-                                                                                                                            package com.unpri.charactermanager;
+package com.unpri.charactermanager;
 
-import javax.swing.SwingUtilities;
 import com.unpri.charactermanager.model.Character;
-import com.unpri.charactermanager.model.CharacterManager;
 import com.unpri.charactermanager.model.CharacterType;
+import com.unpri.charactermanager.model.CharacterManager;
 import com.unpri.charactermanager.view.MainWindow;
 
-public class Main {
-    public static void main(String[] args) {
-        CharacterManager manager = new CharacterManager();
+import javax.swing.SwingUtilities;
 
-        // Data 8 karakter sesuai dengan tampilan UI pada gambar
-        manager.addCharacter(new Character("Arjuna",    CharacterType.WARRIOR, 5));
-        manager.addCharacter(new Character("Merlin",    CharacterType.MAGE,    3));
-        manager.addCharacter(new Character("Athena",    CharacterType.ARCHER,  4));
-        manager.addCharacter(new Character("Elara",     CharacterType.HEALER,  2));
-        manager.addCharacter(new Character("Gandalf",   CharacterType.MAGE,   10));
-        manager.addCharacter(new Character("Gatotkaca", CharacterType.WARRIOR, 7));
-        manager.addCharacter(new Character("Morgana",   CharacterType.MAGE,    1));
-        manager.addCharacter(new Character("Artemis",   CharacterType.ARCHER,  6));
+public class Main {
+
+    public static void main(String[] args) {
 
         SwingUtilities.invokeLater(() -> {
-            MainWindow window = new MainWindow(manager.getAllCharacters());
+
+            CharacterManager manager = new CharacterManager();
+
+            // Data awal
+            manager.addCharacter(
+                new Character("Aldric", CharacterType.WARRIOR, 80)
+            );
+
+            manager.addCharacter(
+                new Character("Luna", CharacterType.MAGE, 55)
+            );
+
+            manager.addCharacter(
+                new Character("Robin", CharacterType.ARCHER, 45)
+            );
+
+            manager.addCharacter(
+                new Character("Elena", CharacterType.HEALER, 30)
+            );
+
+            manager.addCharacter(
+                new Character("Draven", CharacterType.WARRIOR, 70)
+            );
+
+            MainWindow window = new MainWindow(manager);
             window.setVisible(true);
         });
     }
