@@ -1,50 +1,33 @@
-# SPRINT-1-CHARACTER-MANAGER
+TP5 — Character Manager Sprint #2
+Pada sprint ini ditambahkan class CharacterManager yang mengelola koleksi Character memakai ArrayList, dengan penolakan nama duplikat lewat equals(), getAllCharacters() yang mengembalikan salinan (defensive copy), serta counter static untuk jumlah objek yang dibuat.
 
-## Deskripsi
+Fitur baru
+equals() pada Character membandingkan nama, sehingga nama duplikat ditolak
+totalCharacterCreated (static) menghitung jumlah objek Character yang dibuat
+CharacterManager: addCharacter(), findByName(), removeCharacter(), getTotalCharacters(), getAllCharacters()
+Mini-Challenge: getAverageLevel() (mengembalikan 0 jika list kosong) dan findByType()
+Fitur mandiri: getTypeSummary()
+Screenshot output (CRUD dan eksperimen reference)
+alt text Screenshot memperlihatkan nama duplikat ditolak, getAverageLevel() pada list kosong menghasilkan 0.0 tanpa error, serta eksperimen reference: asli == duplikatReferensi bernilai true, sedangkan menambah karakter ke salinan list tidak mengubah total di manager (manager tetap 2, salinan menjadi 3).
 
-Project Character Manager merupakan aplikasi sederhana berbasis Java yang dibuat untuk menerapkan konsep dasar pemrograman berorientasi objek (OOP). Pada TP3 ini, program menampilkan data karakter, menggunakan method untuk mengelola karakter, serta menerapkan konsep thread dengan menampilkan status `isAlive()`.
+Fitur mandiri (Bagian C): getTypeSummary()
+getTypeSummary() merangkum jumlah karakter untuk setiap tipe (WARRIOR, MAGE, ARCHER, HEALER) dalam satu String, misalnya untuk ditampilkan di GUI pada sprint berikutnya. Method ini mengembalikan String, bukan characterList atau salinannya, karena String tidak dapat diubah dari luar. Pemanggil hanya menerima hasil hitungan dan tidak pernah memegang reference ke list internal, sehingga Encapsulation terjaga dan perubahan data hanya bisa lewat addCharacter() dan removeCharacter(). Method memakai CharacterType.values(), sehingga jika kelak ditambah tipe baru seperti NECROMANCER, method ini otomatis ikut menghitungnya tanpa perlu diubah.
 
-## Screenshot Output Terminal
-
-Berikut merupakan screenshot hasil menjalankan program Character Manager melalui terminal VS Code.
-
-**Hasil Output Program:**
-
-![alt text](<Screenshot 2026-11-21 123219.png>)
-
-Screenshot harus memperlihatkan:
-- Hasil program Character Manager.
-- Informasi karakter yang ditampilkan.
-- Proses thread yang dijalankan.
-- Hasil pemeriksaan `isAlive()`.
-
-## Struktur Folder Project
-
-```text
+📁 Struktur Folder Proyek (Sprint 2 - AP5 / TP5)
 CharacterManager/
 │
 ├── src/
-│   └── com/
-│       └── unpri/
-│           └── charactermanager/
-│               ├── Main.java
-│               ├── model/
-│               │   ├── Character.java
-│               │   └── CharacterType.java
-│               └── manager/
-│                   └── CharacterManager.java
-│
-├── screenshots/
-│   └── output-terminal.png
-│
+│   ├── com/
+│   │   └── unpri/
+│   │       └── charactermanager/
+│   │           └── model/
+│   │               ├── Character.java
+│   │               ├── CharacterManager.java
+│   │               └── CharacterType.java
+│   │
+│   └── Main.java
+
+├──![alt text](<Screenshot 2026-11-23 191201.png>)
 └── README.md
-
-
-## Link Google Docs — Bagian D
-
-https://docs.google.com/document/d/1Uncqy0ASuNEMdYQaPi0aY7mME3KVMKmz/edit?usp=drivesdk&ouid=105161267272499409481&rtpof=true&sd=true
-
-
-**Kesimpulan**
-
-Melalui tugas TP3 ini, mahasiswa mempelajari penerapan konsep pemrograman Java, pengelolaan objek, serta penggunaan thread dan pemeriksaan status thread menggunakan method `isAlive()`.
+Analisis Bagian D TP5 (Google Docs)
+https://docs.google.com/document/d/1S4mLBetfWFfwNEzcq9Q2mUtsxNI686x-/edit?usp=drivesdk&ouid=105161267272499409481&rtpof=true&sd=true
